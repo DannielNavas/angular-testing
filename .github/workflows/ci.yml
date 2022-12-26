@@ -15,4 +15,4 @@ jobs:
     - name: Install dependencies yarn
       run: yarn install --immutable --immutable-cache --check-cache
     - name: Run tests
-      run: ng test --watch=false --browsers=ChromeHeadlessCI --code-coverage
+      run: yarn run test -- --watch=false --browsers=ChromeHeadlessCI --code-coverage
