@@ -8,7 +8,6 @@ export class MapsService {
 
   getCurrentPosition() {
     navigator.geolocation.getCurrentPosition((response) => {
-      console.log(response);
       const { latitude, longitude } = response.coords;
       this.center = { lat: latitude, lng: longitude };
     });
