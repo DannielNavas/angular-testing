@@ -1,4 +1,4 @@
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Person } from 'src/app/models/person.model';
@@ -75,7 +75,7 @@ fdescribe('PersonComponent', () => {
   it('should display a test with IMC when do click', () => {
     // arrange
     const expectMsg = `Bajo peso`;
-    component.person = new Person('Navarro', 'Samuel', 4, 15, 80);
+    component.person = new Person('Navarro', 'Samuel', 4, 15, 80); // prueba input angular
     const buttonDebug: DebugElement = fixture.debugElement.query(
       By.css('button.btn-imc')
     );
@@ -86,5 +86,86 @@ fdescribe('PersonComponent', () => {
     // assert
     expect(component.imc).toEqual(expectMsg);
     expect(buttonElement.textContent).toContain(expectMsg);
+  });
+  it('should raise selected event when click', () => {
+    //arrange
+    component.person = new Person('Navarro', 'Samuel', 4, 15, 80);
+    const buttonDebug: DebugElement = fixture.debugElement.query(
+      By.css('button.btn-choose')
+    );
+
+    let selectedPerson: Person | undefined;
+    // probar el output angular
+    component.onSelected.subscribe(
+      (person: Person) => (selectedPerson = person)
+    );
+    // act
+    buttonDebug.triggerEventHandler('click', null); // Ejecuta el evento click
+    fixture.detectChanges();
+    //assert
+    expect(selectedPerson).toEqual(component.person);
+  });
+});
+
+// Prueba aislada del componente padre - Hijo
+@Component({
+  template: `
+    <app-person
+      [person]="person"
+      (onSelected)="onSelected($event)"
+    ></app-person>
+  `,
+})
+class HostComponent {
+  person = new Person('Navas', 'Danny', 25, 55, 1.75);
+  selectedPerson: Person | undefined;
+  onSelected(person: Person) {
+    this.selectedPerson = person;
+  }
+}
+
+fdescribe('PersonComponent for host component', () => {
+  // solo sea padre de person component
+  let component: HostComponent;
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [HostComponent, PersonComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(HostComponent);
+    component = fixture.componentInstance;
+    // component.person = new Person('Daniel', 'Gonzalez', 25, 55, 1.75);  // Para que este este objeto en todas las pruebas
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should display person name', () => {
+    // arrange
+    const expectName = component.person.name;
+    const h3Debug: DebugElement = fixture.debugElement.query(
+      By.css('app-person h3')
+    );
+    const h3Element: HTMLElement = h3Debug.nativeElement;
+    // act
+    fixture.detectChanges();
+    // assert
+    expect(h3Element.textContent).toContain(expectName);
+  });
+
+  it('should raise selected event when clicked', () => {
+    // arrange
+    const btnDebug: DebugElement = fixture.debugElement.query(
+      By.css('app-person .btn-choose')
+    );
+    // act
+    btnDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    // assert
+    // expect(component.selectedPerson).toContain(component.person); // no mas para texto
+    expect(component.selectedPerson).toEqual(component.person);
   });
 });
