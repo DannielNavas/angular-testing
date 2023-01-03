@@ -13,10 +13,11 @@ import { generateManyProducts } from 'src/app/models/product.mock';
 import { ProductsService } from 'src/app/service/product.service';
 import { ProductComponent } from '../product/product.component';
 
+import { By } from '@angular/platform-browser';
 import { ValueService } from '../../service/value.service';
 import { ProductsComponent } from './products.component';
 
-fdescribe('ProductsComponent', () => {
+describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let httpController: HttpTestingController;
@@ -131,6 +132,23 @@ fdescribe('ProductsComponent', () => {
       // assert
       expect(component.rta).toEqual(mockMsg);
       expect(valueService.getPromiseValue).toHaveBeenCalled();
+    }));
+
+    it('should show "my mock string" in <p> when btn was clicked', fakeAsync(() => {
+      // arrange
+      const mockMsg = 'my mock string';
+      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+      const btnDe = fixture.debugElement.query(By.css('.btn-promise'));
+      // act
+      // intentar emular las acciones del usuario
+      btnDe.triggerEventHandler('click', null);
+      tick(); // resuelve la promesa
+      fixture.detectChanges();
+      const rtaDe = fixture.debugElement.query(By.css('.rta'));
+      // assert
+      expect(component.rta).toEqual(mockMsg);
+      expect(valueService.getPromiseValue).toHaveBeenCalled();
+      expect(rtaDe.nativeElement.textContent).toEqual(mockMsg);
     }));
   });
 });

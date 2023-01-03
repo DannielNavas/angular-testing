@@ -7,5 +7,15 @@ import { Product } from 'src/app/models/product.model';
   styleUrls: ['./product.component.sass'],
 })
 export class ProductComponent {
-  @Input() product!: Product;
+  @Input() product: Product = {
+    id: '1',
+    title: 'title exaple',
+    price: 1000,
+    images: [''],
+    description: 'Description example',
+    category: {
+      id: 1,
+      name: 'category example',
+    },
+  };
 }
