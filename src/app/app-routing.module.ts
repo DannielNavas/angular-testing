@@ -11,6 +11,10 @@ const routes: Routes = [
   { path: 'person', component: PeopleComponent },
   { path: 'pico-preview', component: PicoPreviewComponent },
   { path: 'others', component: OthersComponent },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
 ];
 
 @NgModule({
