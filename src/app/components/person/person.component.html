@@ -1,5 +1,5 @@
-
-  <h3>Hola, {{person?.name}}</h3>
-  <p>Mi altura es {{person?.height}}</p>
+  <!-- para mejor manejo de las pruebas unitarias se deberia manejar el elemento data-testid para identificar los elementos -->
+  <h3 data-testid="hello">Hola, {{person.name}}</h3>
+  <p>Mi altura es {{person.height}}</p>
   <button class="btn-imc" (click)="calcIMC()">IMC: {{imc}}</button>
   <button class="btn-choose" (click)="onClick()">Choose</button>

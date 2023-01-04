@@ -8,12 +8,18 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { defer, of } from 'rxjs';
+import { of } from 'rxjs';
 import { generateManyProducts } from 'src/app/models/product.mock';
 import { ProductsService } from 'src/app/service/product.service';
 import { ProductComponent } from '../product/product.component';
 
 import { By } from '@angular/platform-browser';
+import {
+  asyncData,
+  asyncError,
+  mockObservable,
+  mockPromise,
+} from 'src/testing';
 import { ValueService } from '../../service/value.service';
 import { ProductsComponent } from './products.component';
 
@@ -49,7 +55,7 @@ describe('ProductsComponent', () => {
     valueService = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
     // Ejecuta antes de cada prueba
     const productsMock = generateManyProducts(3);
-    productService.getAll.and.returnValue(of(productsMock));
+    productService.getAll.and.returnValue(mockObservable(productsMock));
     fixture.detectChanges(); //  se ejecuta el ngOnInit
   });
 
@@ -81,7 +87,7 @@ describe('ProductsComponent', () => {
       //arrange
       const productsMock = generateManyProducts(10);
       productService.getAll.and.returnValue(
-        defer(() => Promise.resolve(productsMock)) // simula una respuesta asincrona tiene demora en la respuesta -> resolve resuelve en exitoso
+        asyncData(productsMock) // simula una respuesta asincrona tiene demora en la respuesta -> resolve resuelve en exitoso
       );
       // act
       component.getAllProducts();
@@ -96,7 +102,7 @@ describe('ProductsComponent', () => {
     it('should change the status "loading" => "error"', fakeAsync(() => {
       //arrange
       productService.getAll.and.returnValue(
-        defer(() => Promise.reject('error')) // simula una respuesta asincrona tiene demora en la respuesta ->  reject resuelve en error
+        asyncError('error') // simula una respuesta asincrona tiene demora en la respuesta ->  reject resuelve en error
       );
       // act
       component.getAllProducts();
@@ -112,7 +118,7 @@ describe('ProductsComponent', () => {
     it('shoould call to promise', async () => {
       // arrange
       const mockMsg = 'my mock string';
-      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+      valueService.getPromiseValue.and.returnValue(mockPromise(mockMsg));
       // act
       await component.callPromise();
       fixture.detectChanges();
@@ -124,7 +130,7 @@ describe('ProductsComponent', () => {
     it('shoould call to promise fakeAsync', fakeAsync(() => {
       // arrange
       const mockMsg = 'my mock string';
-      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+      valueService.getPromiseValue.and.returnValue(mockPromise(mockMsg));
       // act
       component.callPromise();
       tick();
@@ -137,7 +143,7 @@ describe('ProductsComponent', () => {
     it('should show "my mock string" in <p> when btn was clicked', fakeAsync(() => {
       // arrange
       const mockMsg = 'my mock string';
-      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+      valueService.getPromiseValue.and.returnValue(mockPromise(mockMsg));
       const btnDe = fixture.debugElement.query(By.css('.btn-promise'));
       // act
       // intentar emular las acciones del usuario

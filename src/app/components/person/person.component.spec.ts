@@ -2,7 +2,9 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Person } from 'src/app/models/person.model';
+import { clickEvent } from 'src/testing';
 
+import { getText } from '../../../testing/finders';
 import { PersonComponent } from './person.component';
 
 describe('PersonComponent', () => {
@@ -146,23 +148,26 @@ describe('PersonComponent for host component', () => {
   it('should display person name', () => {
     // arrange
     const expectName = component.person.name;
-    const h3Debug: DebugElement = fixture.debugElement.query(
-      By.css('app-person h3')
-    );
-    const h3Element: HTMLElement = h3Debug.nativeElement;
+    // const h3Debug: DebugElement = fixture.debugElement.query(
+    //   By.css('app-person h3')
+    // );
+    // const h3Debug = query(fixture, 'app-person h3');
+    // const h3Element: HTMLElement = h3Debug.nativeElement;
+    const h3Test = getText(fixture, 'hello');
     // act
     fixture.detectChanges();
     // assert
-    expect(h3Element.textContent).toContain(expectName);
+    expect(h3Test).toContain(expectName);
   });
 
   it('should raise selected event when clicked', () => {
     // arrange
-    const btnDebug: DebugElement = fixture.debugElement.query(
-      By.css('app-person .btn-choose')
-    );
+    // const btnDebug: DebugElement = fixture.debugElement.query(
+    //   By.css('app-person .btn-choose')
+    // );
     // act
-    btnDebug.triggerEventHandler('click', null);
+    // btnDebug.triggerEventHandler('click', null);
+    clickEvent(fixture, 'app-person .btn-choose');
     fixture.detectChanges();
     // assert
     // expect(component.selectedPerson).toContain(component.person); // no mas para texto
