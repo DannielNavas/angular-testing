@@ -32,12 +32,15 @@ export class RegisterFormComponent {
     }
   );
 
+  status: 'loading' | 'success' | 'error' | 'init' = 'init';
+
   constructor(private fb: FormBuilder, private usersService: UsersService) {}
 
   register(event: Event) {
     // buena practica para evitar que el formulario se envie
     event.preventDefault();
     if (this.form.valid) {
+      this.status = 'loading';
       const value: Partial<CreateUserDTO> = {
         email: this.form.controls.email.value
           ? this.form.controls.email.value
@@ -51,6 +54,7 @@ export class RegisterFormComponent {
       };
       this.usersService.create(value).subscribe((rta) => {
         console.log(rta);
+        this.status = 'success';
       });
     } else {
       // marcar todos los campos como tocados para que se muestren los errores
