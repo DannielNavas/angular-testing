@@ -11,7 +11,7 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  create(dto: any) {
+  create(dto: Partial<User>) {
     return this.http.post<User>(this.apiUrl, dto);
   }
 

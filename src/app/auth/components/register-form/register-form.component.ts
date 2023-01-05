@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { MyValidators } from './../../../utils/validators';
 
+import { User } from 'src/app/models/user.model';
 import { UsersService } from './../../../service/user.service';
 
 @Component({
@@ -36,7 +37,17 @@ export class RegisterFormComponent {
   register(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
-      const value = this.form.value;
+      const value: Partial<User> = {
+        email: this.form.controls.email.value
+          ? this.form.controls.email.value
+          : '',
+        password: this.form.controls.password.value
+          ? this.form.controls.password.value
+          : '',
+        name: this.form.controls.name.value
+          ? this.form.controls.name.value
+          : '',
+      };
       this.usersService.create(value).subscribe((rta) => {
         console.log(rta);
       });
