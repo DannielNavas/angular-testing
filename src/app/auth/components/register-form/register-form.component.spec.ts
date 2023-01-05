@@ -4,12 +4,13 @@ import {
 } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { generateOneUser } from 'src/app/models/user.mock';
 import { UsersService } from 'src/app/service/user.service';
-import { getText, query, setInputValue } from 'src/testing';
+import { getText, mockObservable, query, setInputValue } from 'src/testing';
 
 import { RegisterFormComponent } from './register-form.component';
 
-describe('RegisterFormComponent', () => {
+fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let httpController: HttpTestingController;
@@ -102,5 +103,22 @@ describe('RegisterFormComponent', () => {
 
     const textError = getText(fixture, 'emailField-email');
     expect(textError).withContext('text error').toContain("It's not a email");
+  });
+
+  it('should send the form successfully', () => {
+    component.form.patchValue({
+      name: 'test',
+      email: 'dannielnavas@gmail.com',
+      password: '12345asd',
+      confirmPassword: '12345asd',
+      checkTerms: true,
+    });
+    const mockUser = generateOneUser();
+    usersServiceSpy.create.and.returnValue(mockObservable(mockUser));
+    //Act
+    // emula el evento submit
+    component.register(new Event('submit'));
+    expect(component.form.valid).toBeTruthy();
+    expect(usersServiceSpy.create).toHaveBeenCalled();
   });
 });

@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { MyValidators } from './../../../utils/validators';
 
-import { User } from 'src/app/models/user.model';
+import { CreateUserDTO } from 'src/app/models/user.model';
 import { UsersService } from './../../../service/user.service';
 
 @Component({
@@ -35,9 +35,10 @@ export class RegisterFormComponent {
   constructor(private fb: FormBuilder, private usersService: UsersService) {}
 
   register(event: Event) {
+    // buena practica para evitar que el formulario se envie
     event.preventDefault();
     if (this.form.valid) {
-      const value: Partial<User> = {
+      const value: Partial<CreateUserDTO> = {
         email: this.form.controls.email.value
           ? this.form.controls.email.value
           : '',
@@ -52,6 +53,7 @@ export class RegisterFormComponent {
         console.log(rta);
       });
     } else {
+      // marcar todos los campos como tocados para que se muestren los errores
       this.form.markAllAsTouched();
     }
   }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { User } from './../models/user.model';
+import { CreateUserDTO, User } from './../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  create(dto: Partial<User>) {
+  create(dto: Partial<CreateUserDTO>) {
     return this.http.post<User>(this.apiUrl, dto);
   }
 
