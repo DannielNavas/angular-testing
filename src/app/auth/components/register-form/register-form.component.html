@@ -17,8 +17,8 @@
           <input type="email" id="email" name="email" placeholder="Email address" formControlName="email"
             [attr.aria-invalid]="emailField?.touched ? emailField?.invalid : ''" />
           <ng-container *ngIf="emailField?.touched && emailField?.errors">
-            <small *ngIf="emailField?.hasError('required')">*Required</small>
-            <small *ngIf="emailField?.hasError('email')">*It's not a email</small>
+            <small data-testid="emailField-required" *ngIf="emailField?.hasError('required')">*Required</small>
+            <small data-testid="emailField-email" *ngIf="emailField?.hasError('email')">*It's not a email</small>
           </ng-container>
         </label>
       </div>
