@@ -1,4 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
+import { mockObservable } from 'src/testing';
+import { UsersService } from '../service/user.service';
 import { MyValidators } from './validators';
 
 fdescribe('test form MyValidators', () => {
@@ -58,6 +60,30 @@ fdescribe('test form MyValidators', () => {
       // assert
       // Validar que se lance la excepción se debe encerrar en una funcion para poder obtener el error
       expect(fn).toThrow(new Error('matchPasswords: field not found'));
+    });
+  });
+
+  describe('test for validateEmailAsync', () => {
+    // TODO: doneFn se declara para poder indicar cuando se termina la prueba
+    it('should return null with valid email', (doneFn) => {
+      // arrange
+      // TODO: Crear un spy de un servicio
+      const userService: jasmine.SpyObj<UsersService> = jasmine.createSpyObj(
+        'UsersService',
+        ['isAvailableByEmail']
+      );
+      const control = new FormControl('dannielnavas@gmail.com');
+      // act
+      userService.isAvailableByEmail.and.returnValue(
+        mockObservable({ isAvailable: true })
+      );
+      // TODO: esto devuelve una funcion
+      const validator = MyValidators.validateEmailAsync(userService);
+      validator(control).subscribe((rta) => {
+        // assert
+        expect(rta).toBeNull();
+        doneFn();
+      });
     });
   });
 });

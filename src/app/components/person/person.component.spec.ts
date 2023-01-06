@@ -18,7 +18,7 @@ describe('PersonComponent', () => {
 
     fixture = TestBed.createComponent(PersonComponent);
     component = fixture.componentInstance;
-    // component.person = new Person('Daniel', 'Gonzalez', 25, 55, 1.75);  // PAra que este este objeto en todas las pruebas
+    // component.person = new Person('Daniel', 'Gonzalez', 25, 55, 1.75);  // TODO: PAra que este este objeto en todas las pruebas
     fixture.detectChanges();
   });
 
@@ -34,8 +34,8 @@ describe('PersonComponent', () => {
   it('shhould have <p> with "Soy un parrafo"', () => {
     component.person = new Person('Navarro', 'Leslye', 25, 55, 1.75);
     const expectMsg = `Mi altura es ${component?.person?.height}`;
-    const personDebugElement: DebugElement = fixture.debugElement; // esto para obtener el elemento de forma agnostica a la plataforma
-    const pDebug: DebugElement = personDebugElement.query(By.css('p')); // selectores complejos con By.css igual es agnostico a la plataforma
+    const personDebugElement: DebugElement = fixture.debugElement; // TODO: esto para obtener el elemento de forma agnostica a la plataforma
+    const pDebug: DebugElement = personDebugElement.query(By.css('p')); // TODO: selectores complejos con By.css igual es agnostico a la plataforma
     const personElement: HTMLElement = personDebugElement.nativeElement;
     const pDegugElement: HTMLElement = pDebug.nativeElement;
     const p = personElement.querySelector('p');
@@ -47,11 +47,11 @@ describe('PersonComponent', () => {
     // arrange
     component.person = new Person('Navarro', 'Leslye', 25, 55, 1.75);
     const expectMsg = `Hola, ${component?.person?.name}`;
-    const personDebugElement: DebugElement = fixture.debugElement; // esto para obtener el elemento de forma agnostica a la plataforma
-    const h3Debug: DebugElement = personDebugElement.query(By.css('h3')); // selectores complejos con By.css igual es agnostico a la plataforma
+    const personDebugElement: DebugElement = fixture.debugElement; // TODO: esto para obtener el elemento de forma agnostica a la plataforma
+    const h3Debug: DebugElement = personDebugElement.query(By.css('h3')); //TODO: selectores complejos con By.css igual es agnostico a la plataforma
     const personElement: HTMLElement = personDebugElement.nativeElement;
     const h3DegugElement: HTMLElement = h3Debug.nativeElement;
-    const h3 = personElement.querySelector('h3'); // nativo del navegador
+    const h3 = personElement.querySelector('h3'); // TODO: nativo del navegador
     // act
     fixture.detectChanges();
     // assert
@@ -67,7 +67,7 @@ describe('PersonComponent', () => {
       By.css('button.btn-imc')
     ).nativeElement;
     // act
-    component.calcIMC(); // Ejecuta directamente el metodo
+    component.calcIMC(); // TODO: Ejecuta directamente el metodo
     fixture.detectChanges();
     // assert
     expect(component.imc).toEqual(expectMsg);
@@ -77,13 +77,13 @@ describe('PersonComponent', () => {
   it('should display a test with IMC when do click', () => {
     // arrange
     const expectMsg = `Bajo peso`;
-    component.person = new Person('Navarro', 'Samuel', 4, 15, 80); // prueba input angular
+    component.person = new Person('Navarro', 'Samuel', 4, 15, 80); //TODO: prueba input angular
     const buttonDebug: DebugElement = fixture.debugElement.query(
       By.css('button.btn-imc')
     );
     const buttonElement: HTMLElement = buttonDebug.nativeElement;
     // act
-    buttonDebug.triggerEventHandler('click', null); // Ejecuta el evento click
+    buttonDebug.triggerEventHandler('click', null); // TODO: Ejecuta el evento click
     fixture.detectChanges();
     // assert
     expect(component.imc).toEqual(expectMsg);
@@ -102,7 +102,7 @@ describe('PersonComponent', () => {
       (person: Person) => (selectedPerson = person)
     );
     // act
-    buttonDebug.triggerEventHandler('click', null); // Ejecuta el evento click
+    buttonDebug.triggerEventHandler('click', null); // TODO: Ejecuta el evento click
     fixture.detectChanges();
     //assert
     expect(selectedPerson).toEqual(component.person);
@@ -127,7 +127,7 @@ class HostComponent {
 }
 
 describe('PersonComponent for host component', () => {
-  // solo sea padre de person component
+  // TODO: solo sea padre de person component
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
 
@@ -138,7 +138,7 @@ describe('PersonComponent for host component', () => {
 
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    // component.person = new Person('Daniel', 'Gonzalez', 25, 55, 1.75);  // Para que este este objeto en todas las pruebas
+    // TODO: component.person = new Person('Daniel', 'Gonzalez', 25, 55, 1.75);  // Para que este este objeto en todas las pruebas
     fixture.detectChanges();
   });
 

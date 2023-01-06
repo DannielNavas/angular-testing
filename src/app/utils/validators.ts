@@ -1,4 +1,6 @@
 import { AbstractControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { UsersService } from '../service/user.service';
 
 export class MyValidators {
   static isPriceValid(control: AbstractControl) {
@@ -45,6 +47,22 @@ export class MyValidators {
   //     );
   //   };
   // }
+
+  static validateEmailAsync(service: UsersService) {
+    //TODO: Closure de JS
+    return (control: AbstractControl) => {
+      const value = control.value;
+      return service.isAvailableByEmail(value).pipe(
+        map((response: any) => {
+          const isAvailable = response.isAvailable;
+          if (!isAvailable) {
+            return { not_available: true };
+          }
+          return null;
+        })
+      );
+    };
+  }
 }
 
 function containsNumber(value: string) {

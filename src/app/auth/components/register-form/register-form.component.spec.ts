@@ -56,7 +56,7 @@ describe('RegisterFormComponent', () => {
       .withContext('wrong email')
       .toBeFalsy();
     component.form.controls.email.setValue('');
-    // withContext agrega un mensaje para identificar el expect que falla
+    // TODO: withContext agrega un mensaje para identificar el expect que falla
     expect(component.form.controls.email.invalid)
       .withContext('email empty')
       .toBeTruthy();
@@ -67,7 +67,7 @@ describe('RegisterFormComponent', () => {
     expect(component.emailField?.valid).toBeFalsy();
     expect(component.emailField?.invalid).toBeTruthy();
   });
-  // probar valor a valor porque cada campo tiene una validación diferente
+  //TODO: probar valor a valor porque cada campo tiene una validación diferente
   it('should the passwordField be invalid', () => {
     component.passwordField?.setValue('');
     expect(component.passwordField?.valid).withContext('empty').toBeFalsy();
@@ -98,9 +98,9 @@ describe('RegisterFormComponent', () => {
     const inputDe = query(fixture, 'input#email');
     const inputEl: HTMLInputElement = inputDe.nativeElement;
     inputEl.value = 'esto no es un correo';
-    // escribe en la interfaz
+    // TODO: escribe en la interfaz
     inputEl.dispatchEvent(new Event('input'));
-    // salir del desenfoque para que se ejecute la validación
+    // TODO: salir del desenfoque para que se ejecute la validación
     inputEl.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
     expect(component.emailField?.valid).withContext('only email').toBeFalsy();
@@ -109,7 +109,7 @@ describe('RegisterFormComponent', () => {
     expect(textError).withContext('text error').toContain("It's not a email");
   });
   it('should the emailField be invalid form UI helper', () => {
-    // con helper de forms.ts
+    // TODO: con helper de forms.ts
     setInputValue(fixture, 'input#email', 'esto no es un correo');
     fixture.detectChanges();
     expect(component.emailField?.valid).withContext('only email').toBeFalsy();
@@ -129,7 +129,7 @@ describe('RegisterFormComponent', () => {
     const mockUser = generateOneUser();
     usersServiceSpy.create.and.returnValue(mockObservable(mockUser));
     //Act
-    // emula el evento submit
+    // TODO: emula el evento submit
     component.register(new Event('submit'));
     expect(component.form.valid).toBeTruthy();
     expect(usersServiceSpy.create).toHaveBeenCalled();
@@ -146,10 +146,10 @@ describe('RegisterFormComponent', () => {
     const mockUser = generateOneUser();
     usersServiceSpy.create.and.returnValue(asyncData(mockUser));
     //Act
-    // emula el evento submit
+    // TODO: emula el evento submit
     component.register(new Event('submit'));
     expect(component.status).toEqual('loading');
-    tick(); // Ejecuta las tareas pendientes
+    tick(); // TODO: Ejecuta las tareas pendientes
     fixture.detectChanges();
     expect(component.status).toEqual('success');
     expect(component.form.valid).toBeTruthy();
@@ -167,14 +167,14 @@ describe('RegisterFormComponent', () => {
     const mockUser = generateOneUser();
     usersServiceSpy.create.and.returnValue(asyncData(mockUser));
     //Act
-    // emula el evento submit
+    // TODO: emula el evento submit
     // component.register(new Event('submit'));
-    // clickElemet(fixture, 'btn-submit', true);
-    // Ejecuta el evento ngSubmit de angular
+    // TODO: clickElemet(fixture, 'btn-submit', true);
+    // TODO: Ejecuta el evento ngSubmit de angular
     query(fixture, 'form').triggerEventHandler('ngSubmit', new Event('submit'));
     fixture.detectChanges();
     expect(component.status).toEqual('loading');
-    tick(); // Ejecuta las tareas pendientes
+    tick(); // TODO: Ejecuta las tareas pendientes
     fixture.detectChanges();
     expect(component.status).toEqual('success');
     expect(component.form.valid).toBeTruthy();

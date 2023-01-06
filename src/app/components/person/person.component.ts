@@ -7,7 +7,7 @@ import { Person } from 'src/app/models/person.model';
   styleUrls: ['./person.component.sass'],
 })
 export class PersonComponent {
-  @Input() person!: Person; // ! es para decirle a typescript que no es undefined pero si null
+  @Input() person!: Person; // TODO: ! es para decirle a typescript que no es undefined pero si null
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onSelected = new EventEmitter<Person>();
   imc = '';

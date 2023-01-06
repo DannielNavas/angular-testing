@@ -11,11 +11,17 @@ import { UsersService } from './../../../service/user.service';
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.sass'],
 })
+
+// TODO: se agrega primero el valor segundo en un array los validadores sincronos y tercero los asincronos en array
 export class RegisterFormComponent {
   form = this.fb.group(
     {
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: [
+        '',
+        [Validators.required, Validators.email],
+        [MyValidators.validateEmailAsync(this.usersService)],
+      ],
       password: [
         '',
         [
@@ -37,7 +43,7 @@ export class RegisterFormComponent {
   constructor(private fb: FormBuilder, private usersService: UsersService) {}
 
   register(event: Event) {
-    // buena practica para evitar que el formulario se envie
+    // TODO: buena practica para evitar que el formulario se envie
     event.preventDefault();
     if (this.form.valid) {
       this.status = 'loading';
@@ -61,7 +67,7 @@ export class RegisterFormComponent {
         },
       });
     } else {
-      // marcar todos los campos como tocados para que se muestren los errores
+      // TODO: marcar todos los campos como tocados para que se muestren los errores
       this.form.markAllAsTouched();
     }
   }

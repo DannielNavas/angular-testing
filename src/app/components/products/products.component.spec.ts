@@ -53,14 +53,14 @@ describe('ProductsComponent', () => {
       ProductsService
     ) as jasmine.SpyObj<ProductsService>;
     valueService = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
-    // Ejecuta antes de cada prueba
+    // TODO: Ejecuta antes de cada prueba
     const productsMock = generateManyProducts(3);
     productService.getAll.and.returnValue(mockObservable(productsMock));
     fixture.detectChanges(); //  se ejecuta el ngOnInit
   });
 
   it('should create', () => {
-    // Ejecución desde cada prueba
+    //TODO: Ejecución desde cada prueba
     // const productsMock = generateManyProducts(3);
     // productService.getAll.and.returnValue(of(productsMock));
     // fixture.detectChanges(); //  se ejecuta el ngOnInit
@@ -87,13 +87,13 @@ describe('ProductsComponent', () => {
       //arrange
       const productsMock = generateManyProducts(10);
       productService.getAll.and.returnValue(
-        asyncData(productsMock) // simula una respuesta asincrona tiene demora en la respuesta -> resolve resuelve en exitoso
+        asyncData(productsMock) // TODO: simula una respuesta asincrona tiene demora en la respuesta -> resolve resuelve en exitoso
       );
       // act
       component.getAllProducts();
       fixture.detectChanges();
       expect(component.status).toEqual('loading');
-      tick(); // ejecuta todo lo que este pendiente, observables, setTimeOut, promesas, etc -> debe usarse con un fakeAsync
+      tick(); //TODO: ejecuta todo lo que este pendiente, observables, setTimeOut, promesas, etc -> debe usarse con un fakeAsync
       fixture.detectChanges();
       // assert
       expect(component.status).toEqual('success');
@@ -102,13 +102,13 @@ describe('ProductsComponent', () => {
     it('should change the status "loading" => "error"', fakeAsync(() => {
       //arrange
       productService.getAll.and.returnValue(
-        asyncError('error') // simula una respuesta asincrona tiene demora en la respuesta ->  reject resuelve en error
+        asyncError('error') // TODO: simula una respuesta asincrona tiene demora en la respuesta ->  reject resuelve en error
       );
       // act
       component.getAllProducts();
       fixture.detectChanges();
       expect(component.status).toEqual('loading');
-      tick(4000); // ejecuta todo lo que este pendiente, observables, setTimeOut, promesas, etc -> debe usarse con un fakeAsync -> con el setTimeOut de 3 segundos se debe incluir el tiempo de espera
+      tick(4000); //TODO: ejecuta todo lo que este pendiente, observables, setTimeOut, promesas, etc -> debe usarse con un fakeAsync -> con el setTimeOut de 3 segundos se debe incluir el tiempo de espera
       fixture.detectChanges();
       // assert
       expect(component.status).toEqual('error');

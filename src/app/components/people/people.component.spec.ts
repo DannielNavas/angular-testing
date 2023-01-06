@@ -34,7 +34,7 @@ describe('PeopleComponent', () => {
     fixture.detectChanges();
     const debEle: DebugElement[] = fixture.debugElement.queryAll(
       By.css('app-person')
-    ); // despues de la deteccion de cambios por que no encuentra los datos que le estoy pasando
+    ); // TODO: despues de la deteccion de cambios por que no encuentra los datos que le estoy pasando
     // assert
     expect(debEle.length).toEqual(component.people.length);
   });
@@ -46,7 +46,7 @@ describe('PeopleComponent', () => {
     );
     // act
     buttonDebug.triggerEventHandler('click', null);
-    // fixture.detectChanges(); no renderizamos nada pero es buena practica
+    // TODO: fixture.detectChanges(); no renderizamos nada pero es buena practica
     // assert
     expect(component.selectedPerson).toEqual(component.people[0]);
   });
