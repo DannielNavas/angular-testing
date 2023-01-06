@@ -52,9 +52,13 @@ export class RegisterFormComponent {
           ? this.form.controls.name.value
           : '',
       };
-      this.usersService.create(value).subscribe((rta) => {
-        console.log(rta);
-        this.status = 'success';
+      this.usersService.create(value).subscribe({
+        next: () => {
+          this.status = 'success';
+        },
+        error: () => {
+          this.status = 'error';
+        },
       });
     } else {
       // marcar todos los campos como tocados para que se muestren los errores
