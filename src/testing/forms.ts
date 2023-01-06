@@ -21,3 +21,23 @@ export function setInputValue<T>(
   // salir del desenfoque para que se ejecute la validación
   inputEl.dispatchEvent(new Event('blur'));
 }
+
+export function setCheckBoxValue<T>(
+  fixture: ComponentFixture<T>,
+  selector: string,
+  value: boolean,
+  withTestId = false
+) {
+  let debugElement: DebugElement;
+  if (withTestId) {
+    debugElement = queryById(fixture, selector);
+  } else {
+    debugElement = query(fixture, selector);
+  }
+  const inputEl: HTMLInputElement = debugElement.nativeElement;
+  inputEl.checked = value;
+  // escribe en la interfaz
+  inputEl.dispatchEvent(new Event('change'));
+  // salir del desenfoque para que se ejecute la validación
+  inputEl.dispatchEvent(new Event('blur'));
+}

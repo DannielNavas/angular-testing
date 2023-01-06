@@ -11,12 +11,18 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { generateOneUser } from 'src/app/models/user.mock';
 import { UsersService } from 'src/app/service/user.service';
-import { getText, mockObservable, query, setInputValue } from 'src/testing';
+import {
+  getText,
+  mockObservable,
+  query,
+  setCheckBoxValue,
+  setInputValue,
+} from 'src/testing';
 
 import { asyncData } from '../../../../testing/async-data';
 import { RegisterFormComponent } from './register-form.component';
 
-fdescribe('RegisterFormComponent', () => {
+describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let httpController: HttpTestingController;
@@ -141,6 +147,31 @@ fdescribe('RegisterFormComponent', () => {
     //Act
     // emula el evento submit
     component.register(new Event('submit'));
+    expect(component.status).toEqual('loading');
+    tick(); // Ejecuta las tareas pendientes
+    fixture.detectChanges();
+    expect(component.status).toEqual('success');
+    expect(component.form.valid).toBeTruthy();
+    expect(usersServiceSpy.create).toHaveBeenCalled();
+  }));
+
+  it('should send the form successfully demo ui', fakeAsync(() => {
+    setInputValue(fixture, 'input#name', 'test');
+    setInputValue(fixture, 'input#email', 'danniel@gmail.com');
+    setInputValue(fixture, 'input#password', '12345asd');
+    setInputValue(fixture, 'input#confirmPassword', '12345asd');
+    setCheckBoxValue(fixture, 'input#terms', true);
+    console.log('---'.repeat(50));
+    console.log(component.form.value);
+    const mockUser = generateOneUser();
+    usersServiceSpy.create.and.returnValue(asyncData(mockUser));
+    //Act
+    // emula el evento submit
+    // component.register(new Event('submit'));
+    // clickElemet(fixture, 'btn-submit', true);
+    // Ejecuta el evento ngSubmit de angular
+    query(fixture, 'form').triggerEventHandler('ngSubmit', new Event('submit'));
+    fixture.detectChanges();
     expect(component.status).toEqual('loading');
     tick(); // Ejecuta las tareas pendientes
     fixture.detectChanges();
