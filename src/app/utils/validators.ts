@@ -1,12 +1,11 @@
 import { AbstractControl } from '@angular/forms';
 
 export class MyValidators {
-
   static isPriceValid(control: AbstractControl) {
     const value = control.value;
     console.log(value);
     if (value > 10000) {
-      return {price_invalid: true};
+      return { price_invalid: true };
     }
     return null;
   }
@@ -14,7 +13,7 @@ export class MyValidators {
   static validPassword(control: AbstractControl) {
     const value = control.value;
     if (!containsNumber(value)) {
-      return {invalid_password: true};
+      return { invalid_password: true };
     }
     return null;
   }
@@ -22,8 +21,11 @@ export class MyValidators {
   static matchPasswords(control: AbstractControl) {
     const password = control?.get('password')?.value;
     const confirmPassword = control?.get('confirmPassword')?.value;
+    if (password === undefined || confirmPassword === undefined) {
+      throw new Error('matchPasswords: field not found');
+    }
     if (password !== confirmPassword) {
-      return {match_password: true};
+      return { match_password: true };
     }
     return null;
   }
@@ -43,14 +45,12 @@ export class MyValidators {
   //     );
   //   };
   // }
-
 }
 
-function containsNumber(value: string){
-  return value.split('').find(v => isNumber(v)) !== undefined;
+function containsNumber(value: string) {
+  return value.split('').find((v) => isNumber(v)) !== undefined;
 }
 
-
-function isNumber(value: string){
+function isNumber(value: string) {
   return !isNaN(parseInt(value, 10));
 }

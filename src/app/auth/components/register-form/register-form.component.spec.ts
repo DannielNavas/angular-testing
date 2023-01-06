@@ -23,7 +23,7 @@ import {
 import { asyncData, asyncError } from '../../../../testing/async-data';
 import { RegisterFormComponent } from './register-form.component';
 
-fdescribe('RegisterFormComponent', () => {
+describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let httpController: HttpTestingController;
