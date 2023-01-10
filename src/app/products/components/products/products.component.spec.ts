@@ -1,14 +1,27 @@
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { generateManyProducts } from 'src/app/models/product.mock';
-import { ProductsService } from 'src/app/services/product.service';
-import { asyncData, asyncError, mockObservable, mockPromise, query, queryById, getText } from './../../../../testing';
 
-import { ProductsComponent } from './products.component';
+import {
+  asyncData,
+  asyncError,
+  getText,
+  mockObservable,
+  mockPromise,
+  queryById,
+} from './../../../../testing';
+
 import { ProductComponent } from './../product/product.component';
-import { ValueService } from 'src/app/services/value.service';
-import { By } from '@angular/platform-browser';
+import { ProductsComponent } from './products.component';
 
-xdescribe('ProductsComponent', () => {
+import { ProductsService } from 'src/app/service/product.service';
+import { ValueService } from 'src/app/service/value.service';
+
+describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productService: jasmine.SpyObj<ProductsService>;
@@ -16,7 +29,9 @@ xdescribe('ProductsComponent', () => {
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('ProductsService', ['getAll']);
-    const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getPromiseValue']);
+    const valueServiceSpy = jasmine.createSpyObj('ValueService', [
+      'getPromiseValue',
+    ]);
 
     await TestBed.configureTestingModule({
       declarations: [ProductsComponent, ProductComponent],
@@ -30,7 +45,9 @@ xdescribe('ProductsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
-    productService = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
+    productService = TestBed.inject(
+      ProductsService
+    ) as jasmine.SpyObj<ProductsService>;
     valueService = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
     const productsMock = generateManyProducts(3);
     productService.getAll.and.returnValue(mockObservable(productsMock));
@@ -51,7 +68,9 @@ xdescribe('ProductsComponent', () => {
       component.getAllProducts();
       fixture.detectChanges();
       // Assert
-      expect(component.products.length).toEqual(productsMock.length + lengthPrev);
+      expect(component.products.length).toEqual(
+        productsMock.length + lengthPrev
+      );
       expect(productService.getAll).toHaveBeenCalled();
     });
 
@@ -77,7 +96,6 @@ xdescribe('ProductsComponent', () => {
       // Arrange
       productService.getAll.and.returnValue(asyncError('error'));
 
-
       component.getAllProducts();
       fixture.detectChanges();
 
@@ -93,7 +111,7 @@ xdescribe('ProductsComponent', () => {
   });
 
   describe('test for callPromise', () => {
-    it('call promise', async() => {
+    it('call promise', async () => {
       // Arrange
       const mockValue = 'my mock string';
       valueService.getPromiseValue.and.returnValue(mockPromise(mockValue));
@@ -103,7 +121,7 @@ xdescribe('ProductsComponent', () => {
       // Assert
       expect(component.rta).toEqual(mockValue);
       expect(valueService.getPromiseValue).toHaveBeenCalled();
-    })
+    });
 
     it('should show "my mock string" in <p> when btn was clicked', fakeAsync(() => {
       // Arrange
@@ -122,7 +140,5 @@ xdescribe('ProductsComponent', () => {
       expect(valueService.getPromiseValue).toHaveBeenCalled();
       expect(textRta).toContain(mockMsg);
     }));
-  })
-
-
+  });
 });
