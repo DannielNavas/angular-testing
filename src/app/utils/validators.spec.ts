@@ -58,7 +58,7 @@ describe('test form MyValidators', () => {
       // act
       const fn = () => MyValidators.matchPasswords(group);
       // assert
-      // Validar que se lance la excepción se debe encerrar en una funcion para poder obtener el error
+      //TODO: Validar que se lance la excepción se debe encerrar en una funcion para poder obtener el error
       expect(fn).toThrow(new Error('matchPasswords: field not found'));
     });
   });

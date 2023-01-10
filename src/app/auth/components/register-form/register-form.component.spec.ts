@@ -9,6 +9,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { generateOneUser } from 'src/app/models/user.mock';
 import { UsersService } from 'src/app/service/user.service';
 import {
@@ -23,21 +24,28 @@ import {
 import { asyncData, asyncError } from '../../../../testing/async-data';
 import { RegisterFormComponent } from './register-form.component';
 
-describe('RegisterFormComponent', () => {
+fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let httpController: HttpTestingController;
   let usersServiceSpy: jasmine.SpyObj<UsersService>;
+  // TODO: tipado del mock spia
+  let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('UsersService', [
       'create',
       'isAvailableByEmail',
     ]);
+    //TODO: espia
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     await TestBed.configureTestingModule({
       declarations: [RegisterFormComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],
-      providers: [{ provide: UsersService, useValue: spy }],
+      providers: [
+        { provide: UsersService, useValue: spy },
+        { provide: Router, useValue: routerSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterFormComponent);
@@ -50,6 +58,7 @@ describe('RegisterFormComponent', () => {
     usersServiceSpy.isAvailableByEmail.and.returnValue(
       mockObservable({ isAvailable: true })
     );
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     fixture.detectChanges();
   });
 
@@ -230,4 +239,31 @@ describe('RegisterFormComponent', () => {
     const result = getText(fixture, 'emailField-not-available');
     expect(result).toContain('The email is already');
   });
+
+  it('should send the form successfully demo ui Router', fakeAsync(() => {
+    setInputValue(fixture, 'input#name', 'test');
+    setInputValue(fixture, 'input#email', 'danniel@gmail.com');
+    setInputValue(fixture, 'input#password', '12345asd');
+    setInputValue(fixture, 'input#confirmPassword', '12345asd');
+    setCheckBoxValue(fixture, 'input#terms', true);
+    console.log('---'.repeat(50));
+    console.log(component.form.value);
+    const mockUser = generateOneUser();
+    usersServiceSpy.create.and.returnValue(asyncData(mockUser));
+    //Act
+    // TODO: emula el evento submit
+    // component.register(new Event('submit'));
+    // TODO: clickElemet(fixture, 'btn-submit', true);
+    // TODO: Ejecuta el evento ngSubmit de angular
+    query(fixture, 'form').triggerEventHandler('ngSubmit', new Event('submit'));
+    fixture.detectChanges();
+    expect(component.status).toEqual('loading');
+    tick(); // TODO: Ejecuta las tareas pendientes
+    fixture.detectChanges();
+    expect(component.status).toEqual('success');
+    expect(component.form.valid).toBeTruthy();
+    expect(usersServiceSpy.create).toHaveBeenCalled();
+    // TODO: verificar que se haya llamado a la ruta
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/auth/login');
+  }));
 });

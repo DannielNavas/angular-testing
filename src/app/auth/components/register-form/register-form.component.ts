@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { MyValidators } from './../../../utils/validators';
 
+import { Router } from '@angular/router';
 import { CreateUserDTO } from 'src/app/models/user.model';
 import { UsersService } from './../../../service/user.service';
 
@@ -40,7 +41,11 @@ export class RegisterFormComponent {
 
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {}
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private router: Router
+  ) {}
 
   register(event: Event) {
     // TODO: buena practica para evitar que el formulario se envie
@@ -61,6 +66,7 @@ export class RegisterFormComponent {
       this.usersService.create(value).subscribe({
         next: () => {
           this.status = 'success';
+          this.router.navigateByUrl('/auth/login');
         },
         error: () => {
           this.status = 'error';
