@@ -9,9 +9,12 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { generateOneProduct } from 'src/app/models/product.mock';
 import { ProductsService } from 'src/app/service/product.service';
-import { ActivatedRouteStub, mockObservable } from 'src/testing';
-import { asyncData } from '../../../../testing/async-data';
-import { getText } from '../../../../testing/finders';
+import {
+  ActivatedRouteStub,
+  asyncData,
+  getText,
+  mockObservable,
+} from 'src/testing';
 import { ProductDetailComponent } from './product-detail.component';
 
 describe('ProductDetailComponent', () => {
@@ -47,6 +50,8 @@ describe('ProductDetailComponent', () => {
       ProductsService
     ) as jasmine.SpyObj<ProductsService>;
     location = TestBed.inject(Location) as jasmine.SpyObj<Location>;
+
+    route.setQueryParamMap({ type: 'costumer' });
   });
 
   it('should create', () => {
@@ -109,4 +114,17 @@ describe('ProductDetailComponent', () => {
     expect(component.status).toBe('success');
     expect(productService.getOne).toHaveBeenCalledWith(productId);
   }));
+
+  it('should typeCustumer be "costumer"', () => {
+    const productId = '2';
+    route.setParamMap({ id: productId });
+    route.setQueryParamMap({ type: 'costumer' });
+    const productMock = {
+      ...generateOneProduct(),
+      id: productId,
+    };
+    productService.getOne.and.returnValue(mockObservable(productMock));
+    fixture.detectChanges(); // TODO: corre el ngOnInit
+    expect(component.typeCustomer).toEqual('costumer');
+  });
 });

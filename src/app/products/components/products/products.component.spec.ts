@@ -13,6 +13,7 @@ import {
   mockObservable,
   mockPromise,
   queryById,
+  RouterLinkDirectiveStub,
 } from './../../../../testing';
 
 import { ProductComponent } from './../product/product.component';
@@ -34,7 +35,11 @@ describe('ProductsComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [ProductsComponent, ProductComponent],
+      declarations: [
+        ProductsComponent,
+        ProductComponent,
+        RouterLinkDirectiveStub,
+      ],
       providers: [
         { provide: ProductsService, useValue: spy },
         { provide: ValueService, useValue: valueServiceSpy },
