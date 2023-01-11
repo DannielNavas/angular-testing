@@ -14,6 +14,8 @@ import { ProductsComponent } from './components/products/products.component';
 import { HighligthDirective } from './directives/highligth.directive';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ReversePipe } from './pipes/reverse.pipe';
+import { BannerComponent } from './components/banner/banner.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { ReversePipe } from './pipes/reverse.pipe';
     OthersComponent,
     HighligthDirective,
     ReversePipe,
+    BannerComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
