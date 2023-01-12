@@ -5,3 +5,4 @@ export * from './click';
 export * from './finders';
 export * from './forms';
 export * from './router-link';
+export * from './snapshot';

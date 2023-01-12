@@ -13,7 +13,7 @@ import { TokenService } from './token.service';
 export class AuthService {
   private apiUrl = `https://api.escuelajs.co/api/v1/api/auth`;
   private user = new BehaviorSubject<User | null>(null);
-  user$ = this.user.asObservable();
+  // user$ = this.user.asObservable();
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
@@ -45,5 +45,9 @@ export class AuthService {
   logout() {
     this.tokenService.removeToken();
     this.user.next(null);
+  }
+
+  getUser() {
+    return this.user.asObservable();
   }
 }
