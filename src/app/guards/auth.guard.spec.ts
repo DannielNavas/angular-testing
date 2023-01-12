@@ -71,7 +71,7 @@ describe('AuthGuard', () => {
     authService.getUser.and.returnValue(mockObservable(null));
     guard.canActivate(activatedRoute, routerState).subscribe((result) => {
       expect(result).toBeFalse();
-      expect(router.navigate).toHaveBeenCalledWith(['/home']);
+      expect(router.navigate).toHaveBeenCalledWith(['/']);
       doneFn();
     });
   });
@@ -89,7 +89,7 @@ describe('AuthGuard', () => {
     authService.getUser.and.returnValue(mockObservable(null));
     guard.canActivate(activatedRoute, routerState).subscribe((result) => {
       expect(result).toBeFalse();
-      expect(router.navigate).toHaveBeenCalledWith(['/home']);
+      expect(router.navigate).toHaveBeenCalledWith(['/']);
       doneFn();
     });
   });
